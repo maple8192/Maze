@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 class MazeGenerator(private val width: Int, private val height: Int) {
     private val nodes = mutableListOf<Point>()
     private val path = mutableListOf<Point>()
+    private val deadPoint = mutableListOf<Point>()
 
     var field = Array(width) { Array(height) { 0 } }
         private set
@@ -52,6 +53,8 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                 if (movableDir.size <= 0) {
                     nodes.add(here)
                     path.removeLast()
+                    deadPoint.add(here)
+                    println("path removed")
                     continue
                 }
 
@@ -62,6 +65,7 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                 if (nodes.contains(nextPoint)) {
                     nodes.remove(nextPoint)
                     path.add(nextPoint)
+                    println("path added")
                 } else {
                     path.add(nextPoint)
                     for(i in 0 until path.size - 1) {
@@ -70,6 +74,8 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                         field[(current.x + next.x) / 2][(current.y + next.y) / 2] = 1
                     }
                     path.clear()
+                    deadPoint.clear()
+                    println("path cleared")
                     break
                 }
             }
@@ -83,7 +89,8 @@ class MazeGenerator(private val width: Int, private val height: Int) {
     private fun getCanMoveDirections(point: Point): CopyOnWriteArrayList<MoveDirection> {
         val directions = getMoveDirections()
         for (dir in directions) {
-            if (path.contains(Point(point.x + dir.dx, point.y + dir.dy))) {
+            val p = Point(point.x + dir.dx, point.y + dir.dy)
+            if (path.contains(p) || deadPoint.contains(p)) {
                 directions.remove(dir)
             }
         }
