@@ -8,6 +8,7 @@ class MazeGenerator(private val width: Int, private val height: Int) {
     private val path = mutableListOf<Point>()
 
     var field = Array(width) { Array(height) { 0 } }
+        private set
 
     init {
         for (x in 0 until width) {
