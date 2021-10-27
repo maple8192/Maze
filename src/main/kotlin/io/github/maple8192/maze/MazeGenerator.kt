@@ -54,7 +54,6 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                     nodes.add(here)
                     path.removeLast()
                     deadPoint.add(here)
-                    println("path removed")
                     continue
                 }
 
@@ -65,7 +64,6 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                 if (nodes.contains(nextPoint)) {
                     nodes.remove(nextPoint)
                     path.add(nextPoint)
-                    println("path added")
                 } else {
                     path.add(nextPoint)
                     for(i in 0 until path.size - 1) {
@@ -75,7 +73,6 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                     }
                     path.clear()
                     deadPoint.clear()
-                    println("path cleared")
                     break
                 }
             }
