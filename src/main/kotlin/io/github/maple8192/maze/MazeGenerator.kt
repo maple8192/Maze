@@ -7,7 +7,17 @@ class MazeGenerator(private val width: Int, private val height: Int) {
     private val path = mutableListOf<Point>()
     private val deadPoint = mutableListOf<Point>()
 
+    private var created = false
+
     var field = Array(width) { Array(height) { 0 } }
+        public get() {
+            if (!created) {
+                makeMaze()
+                created = true
+            }
+
+            return field
+        }
         private set
 
     init {
@@ -21,11 +31,14 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                 }
             }
         }
-
-        makeMaze()
     }
 
     fun run() {
+        if (!created) {
+            makeMaze()
+            created = true
+        }
+
         for (x in 0 until width) {
             for (y in 0 until height) {
                 if (field[x][y] == 1) {
