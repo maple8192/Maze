@@ -1,7 +1,6 @@
 package io.github.maple8192.maze
 
 import java.awt.Point
-import java.util.concurrent.CopyOnWriteArrayList
 
 class MazeGenerator(private val width: Int, private val height: Int) {
     private val nodes = mutableListOf<Point>()
@@ -50,7 +49,7 @@ class MazeGenerator(private val width: Int, private val height: Int) {
                 val here = path.last()
 
                 val movableDir = getCanMoveDirections(here)
-                if (movableDir.size <= 0) {
+                if (movableDir.isEmpty()) {
                     nodes.add(here)
                     path.removeLast()
                     deadPoint.add(here)
@@ -79,19 +78,15 @@ class MazeGenerator(private val width: Int, private val height: Int) {
         }
     }
 
-    private fun getMoveDirections(): CopyOnWriteArrayList<MoveDirection> {
-        return CopyOnWriteArrayList(MoveDirection.values())
-    }
-
-    private fun getCanMoveDirections(point: Point): CopyOnWriteArrayList<MoveDirection> {
-        val directions = getMoveDirections()
-        for (dir in directions) {
+    private fun getCanMoveDirections(point: Point): MutableList<MoveDirection> {
+        val movableDir = mutableListOf<MoveDirection>()
+        for (dir in MoveDirection.values()) {
             val p = Point(point.x + dir.dx, point.y + dir.dy)
-            if (path.contains(p) || deadPoint.contains(p)) {
-                directions.remove(dir)
+            if (path.contains(p).not() && deadPoint.contains(p).not()) {
+                movableDir.add(dir)
             }
         }
 
-        return directions
+        return movableDir
     }
 }
