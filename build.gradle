@@ -1,9 +1,12 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+    //id 'application'
 }
 
 group 'io.github.maple8192'
 version '1.0.0'
+
+//mainClassName = 'io.github.maple8192.maze.MazeKt'
 
 repositories {
     mavenCentral()
